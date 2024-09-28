@@ -9,36 +9,66 @@ namespace TP1_ComB_Grupo10_Villar_Paez_Wdoviak_Klaus_Fernandez
     internal class ClubDeportivo
     {
         //atributos (dos listas) de la clase ClubDeportivo
-        private List<Socio> socioList;
-        private List<Actividad> actividadList;
+        private List<Socio> socios;
+        private List<Actividad> actividades;
 
         //método constructor -> instanciación
         public ClubDeportivo()
         {
-            this.socioList = new List<Socio>();
-            this.actividadList = new List<Actividad>();
+            this.socios = new List<Socio>();
+            this.actividades = new List<Actividad>();
         }
              
         
         //Definimos el siguiente metodo para inscribir un socio en una actividad
-        public bool InscribirActividad(string nombreActividad, string dniSocio)
+        public string InscribirActividad(string nombreActividad, string dniSocio)
         {
-            Actividad actividad = actividadList.Find(a => a.Nombre == nombreActividad);
-            Socio socio = socioList.Find(s => s.Dni == dniSocio);
+            Actividad actividad = buscarActividad(nombreActividad);
+            Socio socio = socios.Find(s => s.Dni == dniSocio);
 
-            if (actividad != null && socio != null && actividad.CupoDisponible > 0) 
+            if (actividad == null) 
             {
-                socio.Actividad = actividad; //asignamos la actividad
-                actividad.CupoDisponible--; //y reducimos el cupo tras ser registradoel socio en la actividdd
-                return true;
+                return "ACTIVIDAD INEXISTENTE";
             }
-            return false;
+            if (socio == null)
+            {
+                return "SOCIO INEXISTENTE";
+            }
+            return "false";
+
+            /*
+             en el siguiente if, verificamos si el socio esta inscripto
+            en la maxima cantidad de actividades permitidas [3]
+             */
+            if (socio.ActividadesInscriptas.Count >= 3) 
+            {
+                return "TOPE DE ACTIVIDADES ALCANZADO";
+            }
+
+            //a continuación verificamos la disponibilidad de cupos en la actividad
+            if (actividad.CupoDisponible <= 0) 
+            {
+                return "SIN CUPOS DISPONIBLES";
+            }
+
+            if (actividad != null && socio != null && actividad.CupoDisponible >= 1) 
+            {
+                socio.ActividadesInscriptas.Add(actividad);
+                actividad.CupoDisponible--;
+                return "INSCRIPCIÓN EXITOSA";
+            }
+            return "Algo a fallado, socio o actividad inexistentes";
         }
 
+        public Actividad buscarActividad(string nombre) 
+        {
+            return actividades.Find(a => a.Nombre == nombre);
+        }
+        
         //para obtener lalista de actividades
         public List<Actividad> ObtenerActividades()
         {
-            return actividadList;
+            return actividades;
         }
     }
 }
