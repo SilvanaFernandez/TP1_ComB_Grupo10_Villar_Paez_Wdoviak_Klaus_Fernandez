@@ -9,20 +9,36 @@ namespace TP1_ComB_Grupo10_Villar_Paez_Wdoviak_Klaus_Fernandez
     internal class ClubDeportivo
     {
         //atributos (dos listas) de la clase ClubDeportivo
-        private List<Socio> socio;
-        private List<Actividad> actividad;
+        private List<Socio> socioList;
+        private List<Actividad> actividadList;
 
         //método constructor -> instanciación
         public ClubDeportivo()
         {
-            this.socio = new List<Socio>();
-            this.actividad = new List<Actividad>();
+            this.socioList = new List<Socio>();
+            this.actividadList = new List<Actividad>();
         }
              
         
-        private Actividad inscribirActividad(string Actividades.nombre, string Socios.dni, int Actividades.cupoDisponible)
+        //Definimos el siguiente metodo para inscribir un socio en una actividad
+        public bool InscribirActividad(string nombreActividad, string dniSocio)
         {
+            Actividad actividad = actividadList.Find(a => a.Nombre == nombreActividad);
+            Socio socio = socioList.Find(s => s.Dni == dniSocio);
 
+            if (actividad != null && socio != null && actividad.CupoDisponible > 0) 
+            {
+                socio.Actividad = actividad; //asignamos la actividad
+                actividad.CupoDisponible--; //y reducimos el cupo tras ser registradoel socio en la actividdd
+                return true;
+            }
+            return false;
+        }
+
+        //para obtener lalista de actividades
+        public List<Actividad> ObtenerActividades()
+        {
+            return actividadList;
         }
     }
 }
