@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,20 +13,23 @@ namespace TP1_ComB_Grupo10_Villar_Paez_Wdoviak_Klaus_Fernandez
         //atributos
         private string nombre;
         private string dni;
-        private Actividad actividad;// asociación simple
+        private List<Actividad> actividadesInscriptas;// asociación simple
 
         //método constructor -> instanciación
-        public Socio(string nombre, string dni, Actividad actividad)
+        public Socio(string nombre, string dni, List<Actividad> actividadesInscriptas)
         {
             this.Nombre = nombre;
             this.Dni = dni;
-            this.Actividad = actividad;
+            this.actividadesInscriptas = new List<Actividad>();
         }
 
         //métodos get y set
         public string Nombre { get => nombre; set => nombre = value; }
         public string Dni { get => dni; set => dni = value; }
-        internal Actividad Actividad { get => actividad; set => actividad = value; }
+        public List<Actividad> getActividadesSocio()
+        {
+            return actividadesInscriptas;
+        }
 
         //sobreescribir el método ToString con un override
         public override string ToString()
