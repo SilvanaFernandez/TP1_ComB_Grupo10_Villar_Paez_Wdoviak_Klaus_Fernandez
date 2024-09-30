@@ -9,24 +9,24 @@ namespace TP1_ComB_Grupo10_Villar_Paez_Wdoviak_Klaus_Fernandez
     internal class Actividad
     {
         //atributos
-        private string nombre;
+        private string nombreAct;
         private int cupoDisponible;
 
-        //método constructor -> instanciación
-        public Actividad(string nombre, int cupoDisponible)
+        //instanciación
+        public Actividad(string nombreAct, int cupoDisponible)
         {
-            this.Nombre = nombre;
+            this.NombreAct = nombreAct;
             this.CupoDisponible = cupoDisponible;
         }
 
         //métodos get y set
-        public string Nombre { get => nombre; set => nombre = value; }
+        public string NombreAct { get => nombreAct; set => nombreAct = value; }
         public int CupoDisponible { get => cupoDisponible; set => cupoDisponible = value; }
 
         //sobreescribir el método ToString con un override
         public override string ToString()
         {
-            return "Actividad: " + Nombre + "/nCupos disponibles: " + CupoDisponible;
+            return "Actividad: " + NombreAct + "\nCupos disponibles: " + CupoDisponible;
         }
     }
 }
