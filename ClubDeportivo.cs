@@ -43,7 +43,7 @@ namespace TP1_ComB_Grupo10_Villar_Paez_Wdoviak_Klaus_Fernandez
         }
 
         // método registrar socio usando el método buscarSocio
-        public string registrarSocio(string nombre, string id, Actividad actividad)
+        public string registrarSocio(string nombre, string id)
         {
             var socio = buscarSocio(id); //si el socio no existe en la var socio se guarda null y entra en el condicional if para registrarlo
             if (socio == null)
@@ -56,6 +56,55 @@ namespace TP1_ComB_Grupo10_Villar_Paez_Wdoviak_Klaus_Fernandez
             {
                 return "EL SOCIO YA ESTÁ REGISTRADO";
             }
+        }
+
+        //Metodo que utilizaremos posteriormente para buscar la actividad
+        public Actividad buscarActividad(string nombre)
+        {
+            return actividades.Find(a => a.NombreAct == nombre);
+        }
+
+
+        //Definimos metodo para inscribir un socio a una actividad
+        public string inscribirActividad(string nombreActividad, string dni)
+        {
+            Actividad actividad = buscarActividad(nombreActividad);
+            Socio socio = buscarSocio(dni);
+
+            if (actividad == null)
+            {
+                return "Actividad no encontrada";
+            }
+            if (socio == null)
+            {
+                return "Socio no encontrado";
+            }
+
+            //ahora verificamos si el socio esta inscripto o no, en 3 actividades
+            if (socio.ActividadesIncriptas.Count >= 3)
+            {
+                return "Maximo número de actividades alzandas [3]";
+            }
+
+            //verificamos el cupo disponible de la actividad
+            if (actividad.CupoDisponible <= 0)
+            {
+                return "No quedan cupos disponibles";
+            }
+
+            if (actividad != null && socio != null && actividad.CupoDisponible >= 1)
+            {
+                socio.ActividadesIncriptas.Add(actividad);
+                actividad.CupoDisponible--;//reduccimos en 1 el cupo de la actividad
+                return "Inscripción éxitosa";
+            }
+            return "Socio o actividad no encontrados";
+        }
+
+        //definimos metodo para agregar nuevas actividades
+        public void agregarActividad(string nombre, int cupoDisponible)
+        {
+            actividades.Add(new Actividad(nombre, cupoDisponible));
         }
     }
 }
