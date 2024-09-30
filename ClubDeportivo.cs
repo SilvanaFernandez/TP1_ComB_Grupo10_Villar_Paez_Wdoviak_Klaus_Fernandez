@@ -12,63 +12,50 @@ namespace TP1_ComB_Grupo10_Villar_Paez_Wdoviak_Klaus_Fernandez
         private List<Socio> socios;
         private List<Actividad> actividades;
 
-        //método constructor -> instanciación
+        //método constructor
+        public ClubDeportivo(List<Socio> socios, List<Actividad> actividades)
+        {
+            this.socios = socios;
+            this.actividades = actividades;
+        }
+
+        //métodos get y set
+        internal List<Socio> Socios { get => socios; set => socios = value; }
+        internal List<Actividad> Actividades { get => actividades; set => actividades = value; }
+
+        //intanciación
         public ClubDeportivo()
         {
-            this.socios = new List<Socio>();
-            this.actividades = new List<Actividad>();
+            socios = new List<Socio>();
+            actividades = new List<Actividad>();
         }
-             
-        
-        //Definimos el siguiente metodo para inscribir un socio en una actividad
-        public string InscribirActividad(string nombreActividad, string dniSocio)
-        {
-            Actividad actividad = buscarActividad(nombreActividad);
-            Socio socio = socios.Find(s => s.Dni == dniSocio);
 
-            if (actividad == null) 
-            {
-                return "ACTIVIDAD INEXISTENTE";
-            }
+        //método buscar socio si existe
+        private Socio buscarSocio(string id)
+        {
+            Socio socioBuscascado = null;
+            int i = 0;
+            while (i < socios.Count && !socios[i].Id.Equals(id))
+                i++;
+            if (i != Socios.Count)
+                socioBuscascado = Socios[i];
+            return socioBuscascado;
+        }
+
+        // método registrar socio usando el método buscarSocio
+        public string registrarSocio(string nombre, string id, Actividad actividad)
+        {
+            var socio = buscarSocio(id); //si el socio no existe en la var socio se guarda null y entra en el condicional if para registrarlo
             if (socio == null)
             {
-                return "SOCIO INEXISTENTE";
+                socio = new Socio(nombre, id);
+                socios.Add(socio);
+                return "SOCIO REGISTRADO";
             }
-            return "false";
-
-            /*
-             en el siguiente if, verificamos si el socio esta inscripto
-            en la maxima cantidad de actividades permitidas [3]
-             */
-            if (socio.ActividadesInscriptas.Count >= 3) 
+            else // si la var socio no es null es porque se encontró el socio ya registrado
             {
-                return "TOPE DE ACTIVIDADES ALCANZADO";
+                return "EL SOCIO YA ESTÁ REGISTRADO";
             }
-
-            //a continuación verificamos la disponibilidad de cupos en la actividad
-            if (actividad.CupoDisponible <= 0) 
-            {
-                return "SIN CUPOS DISPONIBLES";
-            }
-
-            if (actividad != null && socio != null && actividad.CupoDisponible >= 1) 
-            {
-                socio.ActividadesInscriptas.Add(actividad);
-                actividad.CupoDisponible--;
-                return "INSCRIPCIÓN EXITOSA";
-            }
-            return "Algo a fallado, socio o actividad inexistentes";
-        }
-
-        public Actividad buscarActividad(string nombre) 
-        {
-            return actividades.Find(a => a.Nombre == nombre);
-        }
-        
-        //para obtener lalista de actividades
-        public List<Actividad> ObtenerActividades()
-        {
-            return actividades;
         }
     }
 }
